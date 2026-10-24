@@ -5,14 +5,20 @@
 
 ## 文件
 
+![蒙特卡洛对比](montecarlo_boxplot.png)
+
 | 文件 | 内容 |
 |---|---|
+| `physics.py` | 物理模型与拟合器（供脚本与测试共用） |
+| `test_physics.py` | 6 个单元测试（分区行为/迁移率恢复/传统法偏差方向） |
 | `pinn_sclc.py` | 第 1 部分：物理约束参数辨识（PyTorch + LBFGS）。合成数据蒙特卡洛验证 + 真实数据诊断 |
 | `deepxde_inverse.py` | 第 2 部分：DeepXDE 逆问题——把泊松方程+漂移电流方程组直接写进损失函数辨识 μ |
 | `synthetic_curve.png` | 合成 SCLC 曲线（欧姆区→V_TFL→SCLC 区） |
 | `montecarlo_boxplot.png` | 300 轮小样本对比：物理约束拟合 vs 传统窗口/全点 V² 拟合 |
 | `real_b3_4_fit.png` | 真实数据诊断图（放入自己的数据运行后生成，未随仓库分发） |
 | `deepxde_inverse.png` | DeepXDE 逆问题收敛过程与 J-V 重构 |
+
+![蒙特卡洛箱线图](montecarlo_boxplot.png)
 
 ## 主要结论
 

@@ -20,3 +20,18 @@ jobs:
           python -m pytest test_pipeline.py -v
       - name: Syntax check all python files
         run: python -m py_compile $(git ls-files '*.py')
+
+  pinn-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install torch (CPU) + deps
+        run: |
+          pip install numpy pytest
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Physics model + fitting tests
+        working-directory: pinn
+        run: python -m pytest test_physics.py -v
