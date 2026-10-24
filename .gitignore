@@ -1,0 +1,18 @@
+# 数据与训练产物不入库
+**/data/*.csv
+**/data/PV_Multi_Defect/
+pipeline/data/raw/
+pipeline/data/demo/
+pipeline/results/
+pinn/data/
+pce-regression/data/
+defect-detection/data/
+defect-detection/runs/
+defect-detection/test_preds/
+runs/
+*.pt
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+run.log
