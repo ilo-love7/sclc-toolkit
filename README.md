@@ -1,5 +1,7 @@
 # SCLC Toolkit · SCLC 载流子迁移率测量与分析工具箱
 
+[![CI](https://github.com/ilo-love7/sclc-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ilo-love7/sclc-toolkit/actions/workflows/ci.yml)
+
 围绕 **空间电荷限制电流（SCLC）迁移率测量** 的两个可复现模块：
 从仪器原始数据到迁移率数字的完整链路——先判定数据配不配，再谈提取。
 
@@ -28,6 +30,12 @@ cd pinn && python pinn_sclc.py
 ```
 
 依赖见根目录 `requirements.txt`（numpy / pandas / matplotlib / torch / deepxde）。
+
+单元测试（7 个，覆盖解析/斜率/迁移率反演/三种判定）：
+
+```bash
+python -m pytest pipeline/test_pipeline.py -v
+```
 
 ## License
 

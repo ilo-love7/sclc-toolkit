@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install light dependencies
+        run: pip install numpy pandas matplotlib pytest
+      - name: SCLC pipeline demo + unit tests
+        working-directory: pipeline
+        run: |
+          python make_demo_data.py
+          python sclc_pipeline.py
+          python -m pytest test_pipeline.py -v
+      - name: Syntax check all python files
+        run: python -m py_compile $(git ls-files '*.py')

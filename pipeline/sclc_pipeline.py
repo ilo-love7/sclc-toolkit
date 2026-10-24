@@ -86,6 +86,14 @@ def parse_instrument_csv(path):
         raise ValueError("找不到 [Raw Data] 区，不是源表导出文件")
 
     volts, amps = [], []
+    # 第一个数据点直接跟在 "[Raw Data]," 后面（仪器导出格式如此）
+    first = lines[raw_idx].split(",")
+    if len(first) >= 3:
+        try:
+            volts.append(float(first[1]))
+            amps.append(float(first[2]) * 1e-3)   # mA -> A
+        except ValueError:
+            pass
     for ln in lines[raw_idx + 1:]:
         parts = ln.split(",")
         if len(parts) < 3:
@@ -153,8 +161,10 @@ def mott_gurney_mobility(v, j, thickness_m, eps_r):
     v2 = v ** 2
     s, b = np.polyfit(v2, np.abs(j), 1)
     r = np.corrcoef(v2, np.abs(j))[0, 1]
-    mu = 8.0 * s * thickness_m ** 3 / (9.0 * eps_r * eps0)
-    return mu * 1e4, r  # m²/V·s -> cm²/V·s
+    # j 输入单位是 A/cm²：斜率先乘 1e4 换算回 A/m²，得到 μ 的 m²/V·s，
+    # 再乘 1e4 换算成 cm²/V·s（旧版漏掉前一个 1e4，结果标 cm² 实为 m²）
+    mu_si = 8.0 * s * 1e4 * thickness_m ** 3 / (9.0 * eps_r * eps0)
+    return mu_si * 1e4, r  # -> cm²/V·s
 
 
 def analyze_sample(meta, v, i):
