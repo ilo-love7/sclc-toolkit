@@ -19,7 +19,9 @@ python sclc_pipeline.py      # 跑流水线，结果在 results/
 ![demo2 判定图](figs/demo___demo2_sclc_loglog.png)
 
 红点=实测，蓝线=两段拟合（斜率 1→2），虚线=拐点；另两个样品的判定图见
-`figs/`（欧姆拒绝 / 转变中提示复测）。
+`figs/`（欧姆拒绝 / 转变中提示复测）。每次运行还会自动生成全批次总览图：
+
+![批量总览](figs/batch_overview.png)
 
 ## 用你自己的数据
 

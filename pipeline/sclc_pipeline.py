@@ -266,6 +266,30 @@ def plot_sample(result, sample_name, out_png):
 
 
 # %%
+def plot_batch_overview(details, out_dir):
+    """全批次总览图：每个样品一幅 log-log 判定小图，横向排开。"""
+    if len(details) < 2:
+        return None
+    n = len(details)
+    fig, axes = plt.subplots(1, n, figsize=(4.6 * n, 4.0), sharey=True)
+    if n == 1:
+        axes = [axes]
+    for ax, (sample, result) in zip(axes, details):
+        v, j = result["_vpos"], result["_jpos"]
+        ax.loglog(v, np.abs(j), "o", ms=3, color="#c0392b")
+        ax.axvline(result["V_kink_V"], ls="--", lw=1, color="#2c3e50")
+        short = sample.split("/")[-1]
+        title = result["verdict"].split("：")[0].split(",")[0]
+        ax.set_title(short + "  |  " + title, fontsize=10)
+        ax.set_xlabel("Voltage (V)")
+    axes[0].set_ylabel("|J| (A/cm²)")
+    fig.tight_layout()
+    out = os.path.join(out_dir, "batch_overview.png")
+    fig.savefig(out, dpi=150)
+    plt.close(fig)
+    return out
+
+
 # ------------------------- 批处理主流程 -------------------------
 def run(config=CONFIG):
     os.makedirs(config["output_dir"], exist_ok=True)
@@ -316,6 +340,10 @@ def run(config=CONFIG):
                       "mobility_cm2Vs", "V2_fit_R",
                       "mobility_ref_cm2Vs", "V2_fit_R_ref")})
         details.append((sample, result))
+
+    overview = plot_batch_overview(details, config["output_dir"])
+    if overview:
+        print(f"批量总览图已保存：{overview}")
 
     df = pd.DataFrame(rows)
     csv_path = os.path.join(config["output_dir"], "summary.csv")
